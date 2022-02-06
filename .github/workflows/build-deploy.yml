@@ -9,6 +9,6 @@ jobs:
       - name: pulling git repo
         uses: actions/checkout@v2
       - name: install python v 3.9
-        uses: actions/setup-pyhton@v2
+        uses: actions/setup-python@v2
         with:
           python-version: "3.9"
