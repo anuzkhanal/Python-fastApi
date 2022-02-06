@@ -31,18 +31,46 @@ jobs:
           --health-retries 5
 
     runs-on: ubuntu-latest
+
     steps:
       - name: pulling git repo
         uses: actions/checkout@v2
+
       - name: install python v 3.9
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
+
       - name: update pip
         run: python -m pip install --upgrade pip
+
       - name: install all dependencies
         run: pip install -r requirements.txt
+
       - name: test with pytest
         run: |
           pip install pytest
           pytest
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/fastapi:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/fastapi:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/fastapi:buildcache,mode=max
+
+      - name:
+        run: echo ${{ steps.docker_build.outposts.digest}}
