@@ -146,7 +146,7 @@ async def delete_post(
 @router.put("/{id}", response_model=schemas.PostResponse)
 async def update_post(
     id: int,
-    post: schemas.PostUpdate,
+    updated_post: schemas.PostUpdate,
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
 ):
@@ -172,7 +172,7 @@ async def update_post(
             detail="Not Authorized To Perfom Requested Action",
         )
 
-    post_query.update(post.dict(), synchronize_session=False)
+    post_query.update(updated_post.dict(), synchronize_session=False)
 
     db.commit()
 
