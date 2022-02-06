@@ -13,6 +13,6 @@ jobs:
         with:
           python-version: "3.x"
       - name: update pip
-        uses: python -m pip install --upgrade pip
+        run: python -m pip install --upgrade pip
       - name: install all dependencies
-        uses: pip install -r requirements.txt
+        run: pip install -r requirements.txt
