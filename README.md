@@ -1,5 +1,7 @@
 # Python-fastApi
 
+Backend Api to create posts with voting and users
+
 Tech Stack used
 - Python
 - FastApi
